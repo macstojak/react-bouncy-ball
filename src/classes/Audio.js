@@ -17,6 +17,6 @@ export default class MainTheme{
     
     }
     stop(){
-        this.mainTheme.volume = 0;
+        this.mainTheme.stop();
     }
 }

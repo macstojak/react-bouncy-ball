@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Controls from "./Controls";
+import Tile from "./Tile";
 
 let Game = require("../classes/Game");
 let Piece = require("../classes/Piece");
@@ -9,18 +10,21 @@ const Board = () => {
   const [level, setLevel] = useState(false);
   const [start, setStart] = useState(false);
   const [actualPosition, setActualPosition] = useState({x:1, y:1});
+  const [board, setBoard] = useState([]);
+
   
-  const newGame = new Game();
-  const newPiece = new Piece(actualPosition);
-  newGame.chooseBoard(level);
-  newGame.placePiece(newPiece);
+  let newGame = new Game();
+  let newPiece = new Piece(actualPosition);
+    newGame.chooseBoard(level);
+    
+    newGame.placePiece(newPiece);
  
-  let board = newGame.returnBoard();
-    while(newGame.isEveryTileFilled()){
-        setTimeout(()=>{
-          newGame.play(newPiece);
-        }, 1000)      
-    }
+  useEffect(()=>{
+   
+    setBoard(newGame.returnBoard());
+    newGame.play(newPiece);
+    
+  }, [start])
 
   const LevelLabel = styled.h2`
     font-family:"Press Start 2P", cursive;
@@ -69,7 +73,7 @@ const Board = () => {
         : props.type.symbol === "1"
         ? "blue"
         : props.type.checked===true
-        ? "tan"
+        ? "gold"
         : "white"};
   `;
  
@@ -86,21 +90,21 @@ const Board = () => {
       </LevelButton>
       <br/>
       <StartButton
-        onClick={(e) => {
-          setStart(!start);
-        }}
+        onClick={e=>{setStart(!start)}}
       >
         {start === true ? "Pause" : "Start"}
       </StartButton>
        <Table lengthOfBoard={board.length}>
         <TBody>
           {board.map((row, i) => {
+
             return (
               <TRow key={i}>
                 {row.map((item, j) => {
                   return (
                     <TData key={j} type={item}>
-                      {typeof item === "object"?item.symbol:item}
+                      <Tile item={item} i={i} j={j}></Tile>
+                      
                     </TData>
                   );
                 })}
