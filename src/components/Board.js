@@ -1,30 +1,44 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Controls from "./Controls";
-import Tile from "./Tile";
-
-let Game = require("../classes/Game");
+import data from "../database/data.json";
 let Piece = require("../classes/Piece");
+let Game = require("../classes/Game");
 
 const Board = () => {
   const [level, setLevel] = useState(false);
   const [start, setStart] = useState(false);
-  const [actualPosition, setActualPosition] = useState({x:1, y:1});
+  const [startPosition, setStartPosition] = useState({x:1, y:1});
+  const [piece, setPiece] = useState();
   const [board, setBoard] = useState([]);
 
-  
   let newGame = new Game();
-  let newPiece = new Piece(actualPosition);
-    newGame.chooseBoard(level);
-    
-    newGame.placePiece(newPiece);
- 
+  let newPiece = new Piece(startPosition);
+  newGame.chooseBoard(level);
   useEffect(()=>{
-   
-    setBoard(newGame.returnBoard());
-    newGame.play(newPiece);
+  console.log("newGame", newGame)
+    setPiece(newPiece);
+    if(start===true){
+      newGame.play(newPiece);
+    }
     
   }, [start])
+
+  useEffect(()=>{
+    if(data.length>0){
+      data.splice(0, data.length)
+    }
+    newGame.chooseBoard(level);
+    console.log("activeBoard", newGame.activeBoard)
+    newGame.placePiece(newPiece);
+    setPiece(newPiece);
+    let b = newGame.returnBoard();
+
+    b.forEach(r=>{
+      data.push(r);
+    })
+    setBoard(b);
+  }, [level])
 
   const LevelLabel = styled.h2`
     font-family:"Press Start 2P", cursive;
@@ -58,24 +72,34 @@ const Board = () => {
     border: 2px solid white;
   `;
   const TBody = styled.tbody``;
+  const NextButton = styled(LevelButton)``;
+
+  const handleNextClick = () => {
+   let {x,y} = piece.position;
+      // data[x].splice(y,1, {position:{x, y}, symbol:0, checked:true})
+      newGame.play(piece);
+      // data[piece.position.x].splice(piece.position.y,1, piece);
+      setBoard(newGame.returnBoard());
+    setPiece(piece);
+    
+  }
 
   const TRow = styled.tr`
-    margin: 0 auto;
-  `;
-  const TData = styled.td`
-    margin: 0 auto;
-    padding: 5px;
-    color: ${(props) =>
-      props.type === "X"
-        ? "black"
-        : props.type === "Y"
-        ? "lime"
-        : props.type.symbol === "1"
-        ? "blue"
-        : props.type.checked===true
-        ? "gold"
-        : "white"};
-  `;
+  margin: 0 auto;
+`;
+const TData = styled.td`
+  margin: 0 auto;
+  padding: 5px;
+  color: ${(props) =>
+    props.type === "X"  ? "black"
+      : props.type === "Y"
+      ? "lime"
+      : props.type.symbol === "1"
+      ? "blue"
+      : props.type.checked===true
+      ? "gold"
+      : "white"};
+`;
  
   return (
     <div>
@@ -94,22 +118,24 @@ const Board = () => {
       >
         {start === true ? "Pause" : "Start"}
       </StartButton>
+      <NextButton onClick={e=>handleNextClick()}>Kolejny ruch</NextButton>
        <Table lengthOfBoard={board.length}>
         <TBody>
-          {board.map((row, i) => {
-
-            return (
-              <TRow key={i}>
-                {row.map((item, j) => {
-                  return (
-                    <TData key={j} type={item}>
-                      <Tile item={item} i={i} j={j}></Tile>
+          {console.table(board)}
+        {board.map((row, i) => {
+         
+          return (
+          <TRow key={i}>
+              {row.map((item, j) => {
+              return (
+                  <TData key={j} type={item}>
+                      { typeof item === "object" ? item.symbol : item}
                       
-                    </TData>
-                  );
-                })}
-              </TRow>
-            );
+                  </TData>
+              );
+              })}
+          </TRow>
+          );
           })}
         </TBody>
       </Table>

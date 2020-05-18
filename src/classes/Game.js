@@ -1,3 +1,5 @@
+
+
 module.exports = class Game{
     constructor(){
         this.board = [
@@ -34,14 +36,15 @@ module.exports = class Game{
         this.startPosition={x:0, y:0};
         this.activePosition={x:0, y:0};
         this.on = false;
+        this.piece = [];
     }
     chooseBoard(extended){
-        this.activeBoard = extended===true? this.extendedBoard : this.board;
+        extended===true? this.activeBoard=this.extendedBoard : this.activeBoard=this.board;
    
     }
+ 
     placePiece(piece){
         let {x,y}=piece.position;
-        this.startPosition={x, y};
         this.on=true;
         this.activeBoard[x][y] = piece;
     }
@@ -52,8 +55,8 @@ module.exports = class Game{
   
     play(piece){
         let {x, y} = piece.position;
-        let nextX = piece.position.x+1*piece.vector.x;
-        let nextY = piece.position.y+1*piece.vector.y;
+        let nextX = x+1*piece.vector.x;
+        let nextY = y+1*piece.vector.y;
         let nextTile = this.activeBoard[nextX][nextY];
         this.activePosition={x:nextX, y:nextY};
        
@@ -77,9 +80,8 @@ module.exports = class Game{
                 piece.changeVector(piece.vector, borderXY[0])
              }
             
-             
-             this.isStartingPosition(piece)===true?this.on=false: setTimeout(()=>{this.play(piece)},1000); 
-      
+             this.isStartingPosition(piece)===true?this.on=false: this.on=true; 
+           
           
           
             }else if(nextTile==="Y" || nextTile.symbol==="Y"){
@@ -90,11 +92,10 @@ module.exports = class Game{
                     return v;
                 }
              })
-            
-            piece.changeVector(piece.vector, borderXY);
+            piece.changeVector(piece.vector, borderXY[0], true);
         
-            this.isStartingPosition(piece)===true?this.on=false:setTimeout(()=>{this.play(piece)},1000);
-           
+            this.isStartingPosition(piece)===true?this.on=false:this.on=true;
+         
         }else{
             //zmieniamy obecny kafelek na 0 i checked
             this.activeBoard[x][y]={position:{x,y}, symbol:0, checked:true};
@@ -102,13 +103,13 @@ module.exports = class Game{
             //w następnym kafelku wstawiamy obiekt klasy Piece 1 i dla pionka zmieniamy pozycję startową
             piece.position = {x:nextX,y:nextY};
             this.activeBoard[nextX][nextY] = piece;
-            this.isStartingPosition(piece)===true?this.on=false: setTimeout(()=>{this.play(piece)},1000);
-           
+            this.isStartingPosition(piece)===true?this.on=false: this.on=true;
+          
         }
     
     }
     isStartingPosition(piece){
-        return piece.position.x===piece.startPosition.x && piece.position.y===this.startPosition.y ?true:false;
+        return (piece.position.x===piece.startPosition.x && piece.position.y===this.startPosition.y) ? true : false;
     }
     
 }

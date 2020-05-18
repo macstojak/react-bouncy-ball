@@ -9,9 +9,12 @@ module.exports = class Piece{
         this.vectorsDiagonal=[{x:1, y:0}, {x:-1, y:0}, {x:0,y:-1}, {x:0, y:1}];
         this.vector=this.vectorsAxial[2];
     }
+    getPiece(){
+        return this;
+    }
     changeVector(vector, diagonal, random){
             if(random===true){
-                this.vector = this.vectorsAxial[Math.round(Math.random)*3]
+                this.vector = this.vectorsAxial[Math.floor(Math.random()*4)]
             }else{
             switch(vector){
                 case this.vectorsAxial[0]:
