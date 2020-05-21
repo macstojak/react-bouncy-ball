@@ -18,7 +18,7 @@ module.exports = class Game{
             ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
             ["X", "0", "0", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
             ["X", "0", "0", "0", "X", "X", "X", "X", "X", "X", "X", "X"],
-            ["X", "0", "0", "0", "0", "X", "X", "X", "X", "X", "X", "X"],
+            ["X", "0", "0", "Y", "0", "X", "X", "X", "X", "X", "X", "X"],
             ["X", "0", "0", "0", "0", "0", "X", "X", "X", "X", "X", "X"],
             ["X", "0", "0", "0", "0", "0", "0", "X", "X", "X", "X", "X"],
             ["X", "0", "0", "0", "0", "0", "0", "0", "X", "X", "X", "X"],
@@ -33,6 +33,8 @@ module.exports = class Game{
             ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"]
           ];
          this.activeBoard = [];
+         //9,9 13,4
+        this.YPosition = [{x:9, y:9}, {x: 13, y:4}]
         this.startPosition={x:0, y:0};
         this.activePosition={x:0, y:0};
         this.on = false;
@@ -69,7 +71,6 @@ module.exports = class Game{
                 if(this.activeBoard[borderX][borderY] === "X"){
                     return v;
                 }
-               
              })
             
              if(borderXY.length===2){
@@ -85,6 +86,7 @@ module.exports = class Game{
           
           
             }else if(nextTile==="Y" || nextTile.symbol==="Y"){
+                
             let borderXY = piece.vectorsDiagonal.filter(v=>{
                 let borderX = piece.position.x+1*v.x;
                 let borderY = piece.position.y+1*v.y;
@@ -92,8 +94,11 @@ module.exports = class Game{
                     return v;
                 }
              })
+             this.activeBoard[nextX][nextY]={position:{x,y}, symbol:0, checked:true};
             piece.changeVector(piece.vector, borderXY[0], true);
-        
+            
+            this.randomizeYPosition();
+            
             this.isStartingPosition(piece)===true?this.on=false:this.on=true;
          
         }else{
@@ -111,7 +116,23 @@ module.exports = class Game{
     isStartingPosition(piece){
         return (piece.position.x===piece.startPosition.x && piece.position.y===this.startPosition.y) ? true : false;
     }
-    
+    randomizeYPosition(){
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+          }
+        // let positions = this.activeBoard.filter(item=>{item==="0"||item.symbol==="0"})
+        let x = getRandomInt(1,11);
+        let y = getRandomInt(1,11);
+        let newPlace = this.activeBoard[x][y];
+        while(newPlace==="X"|| newPlace==="Y"){
+            x=getRandomInt(1,11);
+            y=getRandomInt(1,11);
+            newPlace = this.activeBoard[x][y];
+        }
+        this.activeBoard[x][y] = "Y";
+    }
 }
 
 // let Piece = require("./Piece");
