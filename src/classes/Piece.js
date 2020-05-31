@@ -12,9 +12,14 @@ module.exports = class Piece{
     getPiece(){
         return this;
     }
-    changeVector(vector, diagonal, random){
+    changeVector(vector, diagonal, random, axial){
             if(random===true){
                 this.vector = this.vectorsAxial[Math.floor(Math.random()*4)]
+            }else if(axial===true){
+
+                this.vector.x*=-1;
+                this.vector.y*=-1;
+                console.log('boom',this.vector)
             }else{
             switch(vector){
                 case this.vectorsAxial[0]:

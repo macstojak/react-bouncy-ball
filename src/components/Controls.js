@@ -11,21 +11,21 @@ let mainTheme = new MainTheme();
 const Controls = (props) => {
   const [newGame, setNewGame] = useState(props.newGame);
   const [piece, setPiece] = useState(props.newPiece);
+  const [sound, setSound] = useState()
   const [board, setBoard] = useState();
   const [music, setMusic] = useState(true);
   const [sounds, setSounds] = useState(true);
   const [level, setLevel] = useState(false);
-  const [start, setStart] = useState(false);
+  const [start, setStart] = useState(props.start);
   
 
   useEffect(()=>{
    
-    music===true?mainTheme.play():mainTheme.stop();
+    // music===true?mainTheme.play():mainTheme.stop();
   }, [music])
 
   useEffect(()=>{
       if(start===true){
-       
         newGame.placePiece(piece);
         setPiece(piece);
         props.newGame.placePiece(piece);
@@ -33,6 +33,13 @@ const Controls = (props) => {
       }
       
     }, [start])
+  
+    useEffect(()=>{
+    
+      if(props.newGame.sound===true){
+        mainTheme.crash();
+      }
+    }, [props.newGame.sound])
 
     useEffect(()=>{
       // if(data.length>0){
@@ -113,7 +120,7 @@ const Controls = (props) => {
       <StartButton
         onClick={e=>{setStart(!start)}}
       >
-        {start === true ? "Pause" : "Start"}
+        {start === true ? "Start" : "Start"}
       </StartButton>
       <br/>
       <Board newPiece={piece} board={board} newGame={newGame}></Board>

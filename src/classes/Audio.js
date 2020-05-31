@@ -3,6 +3,7 @@ import Pizzicato from "pizzicato";
 export default class MainTheme{
     constructor(){
         this.mainTheme = "";
+        this.crashSound = "";
         this.themeEffect = new Pizzicato.Effects.Distortion({gain: 0.4});
     }
  
@@ -15,6 +16,12 @@ export default class MainTheme{
             this.mainTheme.play();
         });
     
+    }
+    crash(){
+        this.crashSound = new Pizzicato.Sound('./audio/crash.wav', ()=>{
+            this.crashSound.volume=1;
+            this.crashSound.play();
+        })
     }
     stop(){
         this.mainTheme.stop();

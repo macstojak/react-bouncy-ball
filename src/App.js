@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from "styled-components";
 import Controls from "./components/Controls";
 import "./App.css";
@@ -8,6 +8,7 @@ let Piece = require("./classes/Piece");
 function App() {
   
   const [startPosition, setStartPosition] = useState({x:1, y:1});
+  const [start, setStart] = useState(false);
   const Title = styled.h1`
     margin: 0 auto;
     margin-top: 3%;
@@ -18,15 +19,22 @@ function App() {
     width: 80%;
     text-align: center;
   `
+  function endGame(){
+    setStart(true);
+  }
   let newGame = new Game();
   newGame.chooseBoard(false);
   let piece = new Piece(startPosition);
+  useEffect(()=>{
+    newGame.on===true?this.endGame():setStart(false);
+    
+  }, [newGame.on])
   return (
     <div className="App">
       <Container>
       <Title>Not Another Ordinary Bouncy Ball</Title>
       
-      <Controls newPiece={piece} newGame={newGame}>
+      <Controls start={start} newPiece={piece} newGame={newGame}>
         
       </Controls>
       
