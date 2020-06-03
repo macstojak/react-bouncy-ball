@@ -1,0 +1,38 @@
+.level-button{
+  position: block;
+  margin-top: 1%;
+  font-family: "Audiowide", cursive;
+  font-size: 16px;
+  padding: 5px;
+  height: 10%;
+  border: 5px solid indigo;
+  width: 250px;
+  background-color: white;
+  color: indigo;
+}
+
+.level-button:hover{
+  color: white;
+  background-color: firebrick;
+  font-weight: bold;
+}
+
+.music-button{
+  position: block;
+  margin-top: 1%;
+  font-family: "Audiowide", cursive;
+  font-size: 16px;
+  padding: 5px;
+  height: 10%;
+  border: 5px solid indigo;
+  background-color: white;
+  color: indigo;
+  border-radius:50%;
+  height: 50px;
+  width: 50px;
+}
+
+.level-label{
+  font-family:"Press Start 2P", cursive;
+  margin-bottom: 0;
+}

@@ -1,4 +1,5 @@
-module.exports = class Game {
+// module.exports = 
+class Game {
   constructor() {
     this.board = [
       ["X", "X", "X", "X", "X", "X", "X"],
@@ -31,11 +32,7 @@ module.exports = class Game {
       ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
     ];
     this.activeBoard = [];
-    //9,9 13,4
-    this.YPosition = [
-      { x: 9, y: 9 },
-      { x: 13, y: 4 },
-    ];
+  
     this.startPosition = { x: 0, y: 0 };
     this.activePosition = { x: 0, y: 0 };
     this.sound = false;
@@ -50,12 +47,14 @@ module.exports = class Game {
 
   placePiece(piece) {
     let { x, y } = piece.position;
-    this.on = true;
+    
     this.activeBoard[x][y] = piece;
   }
 
   returnBoard() {
+  
     return this.activeBoard;
+    
   }
   countPosition(coordinate, vector) {
     return coordinate + 1 * vector;
@@ -74,8 +73,8 @@ module.exports = class Game {
   }
   searchForBorderAxially(piece) {
     let borderAxial = piece.vectorsAxial.filter((v) => {
-      let borderX = piece.position.x + 1 * v.x;
-      let borderY = piece.position.y + 1 * v.y;
+      let borderX = this.countPosition(piece.position.x, v.x);
+      let borderY = this.countPosition(piece.position.y, v.y);
       let result;
       if (this.activeBoard[borderX][borderY] === "X") {
         result= v;
@@ -85,10 +84,12 @@ module.exports = class Game {
     return borderAxial;
   }
 
+
   play(piece) {
     let { x, y } = piece.position;
     let nextX = this.countPosition(x, piece.vector.x);
     let nextY = this.countPosition(y, piece.vector.y);
+  
     let nextTile = this.activeBoard[nextX][nextY];
     this.activePosition = { x: nextX, y: nextY };
 
@@ -96,18 +97,15 @@ module.exports = class Game {
     if (nextTile === "X" || nextTile.symbol === "X") {
       let borderXY = this.searchForBorderDiagonally(piece);
       let borderZ = this.searchForBorderAxially(piece);
-        console.log("BORDER Z and piece", borderZ[0], piece.position)
       if (borderXY.length === 2) {
-          console.log("BIM", borderXY)
-        piece.changeVector(piece.vector, borderXY[0]);
-        console.log("FIRST MOVE", piece, borderXY[0])
-        piece.changeVector(piece.vector, borderXY[1]);
-        console.log("SECOND MOVE", piece, borderXY[1])
+        
+        piece.changeVector(piece.vector, borderXY[0], false, false);
+        
+        piece.changeVector(piece.vector, borderXY[1], false, false);
+        
       } else if (borderXY.length === 1) {
-          console.log("BOM", piece.vector, borderXY)
-        piece.changeVector(piece.vector, borderXY[0]);
-      } else if (borderZ.length > 0 && borderXY.length === 0) {
-          console.log("BAM", piece.vector, borderZ)
+        piece.changeVector(piece.vector, borderXY[0],false, false);
+      } else if (borderXY.length === 0 && borderZ.length > 0 ) {
         piece.changeVector(piece.vector, borderZ[0], false, true);
       }
       
@@ -115,7 +113,7 @@ module.exports = class Game {
         ? (this.on = false)
         : (this.on = true);
     } else if (nextTile === "Y" || nextTile.symbol === "Y") {
-      this.sound = false;
+      this.sound=false;
       let borderXY = this.searchForBorderDiagonally(piece);
       this.sound = true;
       this.activeBoard[nextX][nextY] = {
@@ -165,18 +163,22 @@ module.exports = class Game {
     }
     this.activeBoard[x][y] = "Y";
   }
+  checkTheSound(){
+    return this.sound;
+  }
 };
 
-// let Piece = require("./Piece");
+let Piece = require("./Piece");
 
-// let piece = new Piece({x:1, y:1});
-// let game = new Game();
-// game.chooseBoard(false);
-// game.placePiece(piece);
-// game.on=true;
-// while(game.on===true){
+let piece = new Piece({x:1, y:1});
+let game = new Game();
+game.chooseBoard(false);
+game.placePiece(piece);
+game.on=true;
+while(game.on===true){
 
-//     game.play(piece);
-// }
+    game.play(piece);
+    console.table(game.returnBoard())
+}
 
 // console.log("DOOOOOOOONE")

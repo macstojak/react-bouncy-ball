@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from "react";
-import styled from "styled-components";
+import React, {useState, useEffect, useRef} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMusic, faDeaf, faVolumeUp, faVolumeOff } from '@fortawesome/free-solid-svg-icons';
 import MainTheme from "../classes/Audio";
-import data from "../database/data.json";
-
+import '../css/buttons.css';
 import Board from "./Board";
+
 let mainTheme = new MainTheme();
 
 const Controls = (props) => {
@@ -26,12 +25,11 @@ const Controls = (props) => {
 
   useEffect(()=>{
       if(start===true){
-        newGame.placePiece(piece);
-        setPiece(piece);
+        // newGame.placePiece(piece);
+        // setPiece(piece);
         props.newGame.placePiece(piece);
         props.newGame.play(piece);
       }
-      
     }, [start])
   
     useEffect(()=>{
@@ -56,74 +54,43 @@ const Controls = (props) => {
     }, [level])
     
   
-
-
-  const LevelButton = styled.button`
-    position: block;
-    margin-top: 1%;
-    font-family: "Audiowide", cursive;
-    font-size: 16px;
-    padding: 5px;
-    height: 10%;
-    border: 5px solid indigo;
-    width: 250px;
-    background-color: white;
-    color: indigo;
-    &:hover {
-      color: white;
-      background-color: firebrick;
-      font-weight: bold;
-    }
-  `;
-  const MusicButton = styled(LevelButton)`
-        border-radius:50%;
-        height: 50px;
-        width: 50px;
-       
-   `;
-   const SoundButton =styled(MusicButton)`
-   `
-   const LevelLabel = styled.h2`
-   font-family:"Press Start 2P", cursive;
-   font-size: 22px;
-   margin-bottom: 0;
- `
- const StartButton = styled(LevelButton)``;
  
   return (
     <div>
-        <LevelLabel>Choose mode:</LevelLabel>
-        <LevelButton
-        onClick={(e) => {
-          setLevel(!level);
-        }}
+       
+        <h3 className="level-label">Choose mode:</h3>
+        <button className="level-button"
+        onClick={
+          e=>setLevel(!level)
+        }
       >
         {level === false ? "Easy" : "Hard"}
-      </LevelButton>
+      </button>
       <br/>
      
-      <MusicButton onClick={(e) => setMusic(!music)}>
+      <button className="music-button" onClick={(e) => setMusic(!music)}>
         {music === true ? (
           <FontAwesomeIcon icon={faMusic}></FontAwesomeIcon>
         ) : (
           <FontAwesomeIcon icon={faDeaf}></FontAwesomeIcon>
         )}
-      </MusicButton>
-      <SoundButton onClick={(e) => setSounds(!sounds)}>
+      </button>
+      <button className="music-button" onClick={(e) => setSounds(!sounds)}>
         {sounds === true ? (
           <FontAwesomeIcon icon={faVolumeUp}></FontAwesomeIcon>
         ) : (
           <FontAwesomeIcon icon={faVolumeOff}></FontAwesomeIcon>
         )}
-      </SoundButton>
+      </button>
       <br/>
-      <StartButton
+      <button className="level-button"
         onClick={e=>{setStart(!start)}}
       >
         {start === true ? "Start" : "Start"}
-      </StartButton>
+      </button>
       <br/>
-      <Board newPiece={piece} board={board} newGame={newGame}></Board>
+     
+      <Board newPiece={piece} board={board} newGame={props.newGame}></Board>
     </div>
   );
 };

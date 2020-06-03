@@ -1,24 +1,18 @@
-import React, {useState, useEffect} from 'react';
-import styled from "styled-components";
+import React, {useState, useEffect, useRef} from 'react';
 import Controls from "./components/Controls";
 import "./App.css";
-let Game = require("./classes/Game");
+import "./css/main.css";
 let Piece = require("./classes/Piece");
 
+let Game = require("./classes/Game");
+let pieceObj = new Piece();
+        
+pieceObj.setStartPosition({x:1,y:1});
+
 function App() {
-  
   const [startPosition, setStartPosition] = useState({x:1, y:1});
   const [start, setStart] = useState(false);
-  const Title = styled.h1`
-    margin: 0 auto;
-    margin-top: 3%;
-    font-family: "Press Start 2P", cursive;
-  `
-  const Container = styled.div`
-  margin: 0 auto;
-    width: 80%;
-    text-align: center;
-  `
+  
   function endGame(){
     setStart(true);
   }
@@ -31,14 +25,10 @@ function App() {
   }, [newGame.on])
   return (
     <div className="App">
-      <Container>
-      <Title>Not Another Ordinary Bouncy Ball</Title>
-      
-      <Controls start={start} newPiece={piece} newGame={newGame}>
-        
-      </Controls>
-      
-      </Container>
+      <div className="container">
+      <h1 className="title">Not Another Ordinary Bouncy Ball</h1>
+      <Controls start={start} newPiece={piece} newGame={newGame}/> 
+      </div>
     </div>
   );
 }
