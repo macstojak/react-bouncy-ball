@@ -1,4 +1,4 @@
-import _ from "lodash";
+var _ = require("lodash");
 module.exports = class Piece{
     constructor(position){
         this.startPosition = position;
@@ -18,12 +18,43 @@ module.exports = class Piece{
         return this.position;
     }
     checkTheDirectionAxially(vector){
-        this.vectorsAxial.forEach(item=>{
-            if(_.isEqual(item,vector)){
-                this.vector=item;
-            }
-        })
+        // this.vectorsAxial.forEach(item=>{
+        //     if(_.isEqual(item,vector)){
+        //         this.vector.x*=-1;
+        //         this.vector.y*=-1;
+        //     }
+        // })
+     
+        if(_.isEqual(vector,this.vectorsAxial[0])){
+            this.vector=this.vectorsAxial[2];
+        }
+        if(_.isEqual(vector,this.vectorsAxial[1])){
+            this.vector=this.vectorsAxial[3];
+        }
+        if(_.isEqual(vector,this.vectorsAxial[2])){
+            this.vector=this.vectorsAxial[0];
+        }
+        if(_.isEqual(vector,this.vectorsAxial[3])){    
+            this.vector=this.vectorsAxial[1];
+        }
+         
+    }
+    checkTheDirectionDiagonally(vector, diagonal){
        
+    
+        if(_.isEqual(vector,this.vectorsAxial[0])){
+        
+                (_.isEqual(diagonal,this.vectorsDiagonal[2])) ? this.vector=this.vectorsAxial[1] : this.vector=this.vectorsAxial[3];
+        }
+        if(_.isEqual(vector,this.vectorsAxial[1])){
+            (_.isEqual(diagonal,this.vectorsDiagonal[3])) ? this.vector=this.vectorsAxial[0] : this.vector=this.vectorsAxial[2];
+        }
+        if(_.isEqual(vector,this.vectorsAxial[2])){ 
+            (_.isEqual(diagonal,this.vectorsDiagonal[3])) ? this.vector=this.vectorsAxial[3] : this.vector=this.vectorsAxial[1]; 
+        }
+        if(_.isEqual(vector,this.vectorsAxial[3])){
+                (_.isEqual(diagonal,this.vectorsDiagonal[0])) ? this.vector=this.vectorsAxial[0] : this.vector=this.vectorsAxial[2];
+        }
     }
     changeVector(vector, diagonal, random, axial){
             if(random===true){
@@ -32,23 +63,7 @@ module.exports = class Piece{
                 this.checkTheDirectionAxially(vector);
                 
             }else{
-            switch(vector){
-                case this.vectorsAxial[0]:
-                    diagonal===this.vectorsDiagonal[2] ? this.vector=this.vectorsAxial[1] : this.vector=this.vectorsAxial[3];
-                    break;
-                case this.vectorsAxial[1]:
-                    diagonal===this.vectorsDiagonal[3] ? this.vector=this.vectorsAxial[0] : this.vector=this.vectorsAxial[2];
-                    break;
-                case this.vectorsAxial[2]: 
-                    diagonal===this.vectorsDiagonal[3] ? this.vector=this.vectorsAxial[3] : this.vector=this.vectorsAxial[1]; 
-                    break;
-                case this.vectorsAxial[3]:
-                    diagonal===this.vectorsDiagonal[0] ? this.vector=this.vectorsAxial[0] : this.vector=this.vectorsAxial[2];
-                    break;
-                default:
-                    break;
-                    
-            }
+                this.checkTheDirectionDiagonally(vector, diagonal)
         }   
     }
    

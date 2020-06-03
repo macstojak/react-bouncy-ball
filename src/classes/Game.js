@@ -1,5 +1,4 @@
-// module.exports = 
-class Game {
+module.exports = class Game {
   constructor() {
     this.board = [
       ["X", "X", "X", "X", "X", "X", "X"],
@@ -168,17 +167,17 @@ class Game {
   }
 };
 
-let Piece = require("./Piece");
+// let Piece = require("./Piece");
 
-let piece = new Piece({x:1, y:1});
-let game = new Game();
-game.chooseBoard(false);
-game.placePiece(piece);
-game.on=true;
-while(game.on===true){
+// let piece = new Piece({x:1, y:1});
+// let game = new Game();
+// game.chooseBoard(false);
+// game.placePiece(piece);
+// game.on=true;
+// while(game.on===true){
 
-    game.play(piece);
-    console.table(game.returnBoard())
-}
+//     game.play(piece);
+//     console.table(game.returnBoard())
+// }
 
 // console.log("DOOOOOOOONE")
