@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Tile from "./Tile";
 import "../css/table.css";
-import MainTheme from "../classes/Audio";
-let mainTheme = new MainTheme();
 
 const Board = (props) => {
   const [board, setBoard] = useState(props.newGame.returnBoard());

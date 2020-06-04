@@ -10,7 +10,6 @@ module.exports = class Piece{
         this.vector={x:1,y:1};
     }
     setStartPosition(position){
-       
         this.position = position;
         this.startPosition = position;
     }
@@ -18,13 +17,6 @@ module.exports = class Piece{
         return this.position;
     }
     checkTheDirectionAxially(vector){
-        // this.vectorsAxial.forEach(item=>{
-        //     if(_.isEqual(item,vector)){
-        //         this.vector.x*=-1;
-        //         this.vector.y*=-1;
-        //     }
-        // })
-     
         if(_.isEqual(vector,this.vectorsAxial[0])){
             this.vector=this.vectorsAxial[2];
         }
@@ -39,9 +31,7 @@ module.exports = class Piece{
         }
          
     }
-    checkTheDirectionDiagonally(vector, diagonal){
-       
-    
+    checkTheDirectionDiagonally(vector, diagonal){    
         if(_.isEqual(vector,this.vectorsAxial[0])){
         
                 (_.isEqual(diagonal,this.vectorsDiagonal[2])) ? this.vector=this.vectorsAxial[1] : this.vector=this.vectorsAxial[3];

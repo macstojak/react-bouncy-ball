@@ -31,11 +31,8 @@ module.exports = class Game {
       ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
     ];
     this.activeBoard = [];
-  
     this.startPosition = { x: 0, y: 0 };
     this.activePosition = { x: 0, y: 0 };
-    this.sound = false;
-    this.on = false;
     this.piece = [];
   }
   chooseBoard(extended) {
@@ -51,9 +48,7 @@ module.exports = class Game {
   }
 
   returnBoard() {
-  
     return this.activeBoard;
-    
   }
   countPosition(coordinate, vector) {
     return coordinate + 1 * vector;
@@ -108,13 +103,11 @@ module.exports = class Game {
         piece.changeVector(piece.vector, borderZ[0], false, true);
       }
       
-      this.isStartingPosition(piece) === true
-        ? (this.on = false)
-        : (this.on = true);
+     
     } else if (nextTile === "Y" || nextTile.symbol === "Y") {
-      this.sound=false;
+     
       let borderXY = this.searchForBorderDiagonally(piece);
-      this.sound = true;
+     
       this.activeBoard[nextX][nextY] = {
         position: { x, y },
         symbol: 0,
@@ -124,9 +117,7 @@ module.exports = class Game {
 
       this.randomizeYPosition();
 
-      this.isStartingPosition(piece) === true
-        ? (this.on = false)
-        : (this.on = true);
+   
     } else {
       //zmieniamy obecny kafelek na 0 i checked
       this.activeBoard[x][y] = { position: { x, y }, symbol: 0, checked: true };
@@ -134,17 +125,10 @@ module.exports = class Game {
       //w następnym kafelku wstawiamy obiekt klasy Piece 1 i dla pionka zmieniamy pozycję startową
       piece.position = { x: nextX, y: nextY };
       this.activeBoard[nextX][nextY] = piece;
-      this.isStartingPosition(piece) === true
-        ? (this.on = false)
-        : (this.on = true);
+    
     }
   }
-  isStartingPosition(piece) {
-    return piece.position.x === piece.startPosition.x &&
-      piece.position.y === this.startPosition.y
-      ? true
-      : false;
-  }
+  
   randomizeYPosition() {
     function getRandomInt(min, max) {
       min = Math.ceil(min);
@@ -162,9 +146,7 @@ module.exports = class Game {
     }
     this.activeBoard[x][y] = "Y";
   }
-  checkTheSound(){
-    return this.sound;
-  }
+
 };
 
 // let Piece = require("./Piece");
